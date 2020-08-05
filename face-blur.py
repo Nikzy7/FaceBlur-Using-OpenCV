@@ -1,9 +1,13 @@
+#importing the necessary libraries
 import cv2
 import numpy as np
+import sys
 
+#creating the OpenCV webcam object and Loading the face detection Haar Cascade
 cap = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt2.xml')
 
+#Function to apply gaussian blur
 def applyblur(image,factor=3.0):
 	(h, w) = image.shape[:2]
 	kW = int(w / factor)
@@ -16,6 +20,7 @@ def applyblur(image,factor=3.0):
 		kH -= 1
 	return cv2.GaussianBlur(image, (kW, kH), 0)
 
+#function to apply pixelated blur
 def applyblur_pixelate(image,blocks=10):
 	(h, w) = image.shape[:2]
 	xSteps = np.linspace(0, w, blocks + 1, dtype="int")
@@ -34,17 +39,39 @@ def applyblur_pixelate(image,blocks=10):
 
 	return image
 
-
+'''
+def detect_faces():
+function handles the face detection operation using OpenCV
+receives the frame captured as argument
+return the co-ordinates of detected face
+'''
 def detect_faces(frame):
 	gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 	faces = face_cascade.detectMultiScale(gray_image, 1.1, 4)
 
 	return faces
 
+'''
 def main():
-	while True:
-		
+handles the main while loop and is the driver function
+'''
+
+def main():
+	#handling the CLA
+	try:
+		blur_type = sys.argv[1]
+		if blur_type!="gaussian" and blur_type!="pixelate":
+			print("Possible error with the command Line Argument !!!")
+			exit(-1)
+	except:
+		print("Missing command line argument to determine the type of blur !")
+		exit(-1)
+
+	while True:		
+		#capturing frame
 		frame = cap.read()[1]
+
+		#applying scaling
 		scale_percent = 80 # percent of original size
 		width = int(frame.shape[1] * scale_percent / 100)
 		height = int(frame.shape[0] * scale_percent / 100)
@@ -53,15 +80,20 @@ def main():
 
 		frame = cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
       
+      	#detecting faces in frame
 		faces = detect_faces(frame)
 
 		for x in range(len(faces)):
 			(x,y,w,h) = faces[x]
-			#frame[y:y+h, x:x+w] = applyblur(frame[y:y+h, x:x+w])
-			frame[y:y+h, x:x+w] = applyblur_pixelate(frame[y:y+h, x:x+w])
+			if blur_type == "gaussian":
+				frame[y:y+h, x:x+w] = applyblur(frame[y:y+h, x:x+w])
+			else:
+				frame[y:y+h, x:x+w] = applyblur_pixelate(frame[y:y+h, x:x+w])
 
-		cv2.imshow("Face Mask Detector - BETA Jetson Nano", frame)
+		cv2.imshow("FaceBlur using OpenCV", frame)
+
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			break
 
-main()
+if __name__ == "__main__":
+	main()

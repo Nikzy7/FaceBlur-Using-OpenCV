@@ -35,4 +35,12 @@ Follow the instructions below:
           python face-blur.py pixelate
           
 ## Results
-Will upload the GIFs soon !
+### For Gaussian Blur
+<p align="center">
+<img src="gaussian_result.gif" width="450" height="350">
+</p>
+
+### For Pixelated Blur
+<p align="center">
+<img src="pixelate_result.gif" width="450" height="350">
+</p>

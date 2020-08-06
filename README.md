@@ -15,7 +15,7 @@ That should clear the dependency part.
 ## Step By Step explanation of working of this project:
 * The program starts by checking the command line argument provided by the user to determine which type of blur is to be applied. If no arguments or wrong arguments are provide, a try block will print the error message and close the program.
 * After the determination of the type of blur, a while loop (infinity loop) is instantiated that captures a frame from the webcam.
-* The frame is scaled down to its 80% and the presence of faces is detected using the HaarCascade Face detection of OpenCVz.
+* The frame is scaled down to its 80% and the presence of faces is detected using the HaarCascade Face detection of OpenCV.
 * Upon getting the coordinates of all the faces present in the frame, the selected type of blur is applied on those areas of the image and then displayed on the screen.
 * Upon pressing "q", the loop terminates.
 

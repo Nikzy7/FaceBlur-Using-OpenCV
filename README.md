@@ -1,4 +1,4 @@
-# FaceBlur Using OpenCV
+# FaceBlur Using OpenCV [![Made with Python](https://img.shields.io/badge/python-3.5.2-grey?style=for-the-badge&labelColor=yellow&logo=python)](https://www.python.org/)<br>
 This Mini Project uses OpenCV face detector and Blur capabilities to create a facial blur application. Feel free to use, share or modify this project. I'll be really happy to see what you can build upon these mini-projects.
 
 ## Installing the dependencies of this project
